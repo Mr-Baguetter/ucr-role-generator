@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCR Role Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <form id="yamlForm">
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input type="number" id="id" name="id" required>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="nickname">Nickname</label>
+            <input type="text" id="nickname" name="nickname">
+        </div>
+
+        <div class="form-group">
+            <label for="custom_info">Custom Info</label>
+            <input type="text" id="custom_info" name="custom_info">
+        </div>
+
+        <div class="form-group">
+            <label for="badge_name">Badge Name</label>
+            <input type="text" id="badge_name" name="badge_name">
+        </div>
+
+        <div class="form-group">
+            <label for="badge_color">Badge Color</label>
+            <select id="badge_color" name="badge_color">
+                <option value="pumpkin">Pumpkin</option>
+                <option value="blue">Blue</option>
+                <option value="red">Red</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="role">Role</label>
+            <select id="role" name="role">
+                <option value="ClassD">ClassD</option>
+                <option value="Scientist">Scientist</option>
+                <option value="Guard">Guard</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="team">Team</label>
+            <input type="text" id="team" name="team">
+        </div>
+        
+        <div class="form-group">
+            <label for="role_appearance">Role Appearance</label>
+            <select id="role_appearance" name="role_appearance">
+                <option value="ClassD">ClassD</option>
+                <option value="Scientist">Scientist</option>
+                <option value="Guard">Guard</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="is_friend_of">Is Friend Of</label>
+            <select id="is_friend_of" name="is_friend_of">
+                <option value="Mtf">MTF</option>
+                <option value="Scp">SCP</option>
+                <option value="ChaosInsurgency">Chaos Insurgency</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="health_amount">Health (Amount)</label>
+            <input type="number" id="health_amount" name="health_amount" value="100">
+        </div>
+
+        <div class="form-group">
+            <label for="health_maximum">Health (Maximum)</label>
+            <input type="number" id="health_maximum" name="health_maximum" value="100">
+        </div>
+
+        <div class="form-group">
+            <label for="hume_shield">Hume Shield</label>
+            <input type="number" id="hume_shield" name="hume_shield" value="0">
+        </div>
+
+        <div class="form-group">
+            <label for="hume_shield_regeneration_amout">Hume Shield Regeneration Amount</label>
+            <input type="number" step="0.1" id="hume_shield_regeneration_amout" name="hume_shield_regeneration_amout" value="2">
+        </div>
+
+        <div class="form-group">
+            <label for="hume_shield_regeneration_delay">Hume Shield Regeneration Delay</label>
+            <input type="number" step="0.1" id="hume_shield_regeneration_delay" name="hume_shield_regeneration_delay" value="7.5">
+        </div>
+
+        <div class="form-group">
+            <label for="ahp_amount">AHP Amount</label>
+            <input type="number" id="ahp_amount" name="ahp_amount" value="0">
+        </div>
+
+        <div class="form-group">
+            <label for="ahp_limit">AHP Limit</label>
+            <input type="number" id="ahp_limit" name="ahp_limit" value="75">
+        </div>
+
+        <div class="form-group">
+            <label for="ahp_decay">AHP Decay</label>
+            <input type="number" step="0.0001" id="ahp_decay" name="ahp_decay" value="1.20000005">
+        </div>
+
+        <div class="form-group">
+            <label for="ahp_efficacy">AHP Efficacy</label>
+            <input type="number" step="0.0001" id="ahp_efficacy" name="ahp_efficacy" value="0.699999988">
+        </div>
+
+        <div class="form-group">
+            <label for="ahp_sustain">AHP Sustain</label>
+            <input type="number" id="ahp_sustain" name="ahp_sustain" value="0">
+        </div>
+
+        <div class="form-group">
+            <label for="ahp_persistant">AHP Persistent</label>
+            <input type="checkbox" id="ahp_persistant" name="ahp_persistant">
+        </div>
+
+        <div class="form-group">
+            <label for="effects">Effects</label>
+            <div id="effects-container">
+            </div>
+            <button type="button" id="add-effect-btn">Add Effect</button>
+        </div>
+
+
+
+        <div class="form-group">
+            <label for="stamina_regen_multiplier">Stamina Regen Multiplier</label>
+            <input type="number" step="0.1" id="stamina_regen_multiplier" name="stamina_regen_multiplier" value="1">
+        </div>
+
+        <div class="form-group">
+            <label for="stamina_usage_multiplier">Stamina Usage Multiplier</label>
+            <input type="number" step="0.1" id="stamina_usage_multiplier" name="stamina_usage_multiplier" value="1">
+        </div>
+
+        <div class="form-group">
+            <label for="stamina_infinite">Stamina Infinite</label>
+            <input type="checkbox" id="stamina_infinite" name="stamina_infinite">
+        </div>
+
+        <div class="form-group">
+            <label for="max_scp330_candies">Max SCP330 Candies</label>
+            <input type="number" id="max_scp330_candies" name="max_scp330_candies" value="2">
+        </div>
+
+        <div class="form-group">
+            <label for="can_escape">Can Escape</label>
+            <input type="checkbox" id="can_escape" name="can_escape" checked>
+        </div>
+
+        <div class="form-group">
+            <label>Role After Escape</label>
+
+            <div class="form-group">
+                <label for="normal_escape">Normal Escape</label>
+                <select id="normal_escape" name="normal_escape">
+                    <option value="Spectator">Spectator</option>
+                    <option value="ClassD">ClassD</option>
+                    <option value="Scientist">Scientist</option>
+                    <option value="Guard">Guard</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cuffed_escape_team">Cuffed Escape - Team</label>
+                <select id="cuffed_escape_team" name="cuffed_escape_team">
+                    <option value="ChaosInsurgency">Chaos Insurgency</option>
+                    <option value="FoundationForces">Nine-Tailed Fox</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cuffed_escape_role">Cuffed Escape - New Role</label>
+                <select id="cuffed_escape_role" name="cuffed_escape_role">
+                    <option value="ClassD">ClassD</option>
+                    <option value="Scientist">Scientist</option>
+                    <option value="Guard">Guard</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="scale">Scale (x, y, z)</label>
+            <input type="text" id="scale" name="scale" placeholder="1,1,1" value="1,1,1">
+        </div>
+
+        <div class="form-group">
+            <label for="spawn_broadcast">Spawn Broadcast</label>
+            <textarea id="spawn_broadcast" name="spawn_broadcast">You are a &lt;color=orange&gt;&lt;b&gt;Janitor&lt;/b&gt;&lt;/color&gt;!\nClean the Light Containment Zone!</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="spawn_broadcast_duration">Spawn Broadcast Duration</label>
+            <input type="number" id="spawn_broadcast_duration" name="spawn_broadcast_duration" value="5">
+        </div>
+
+       
+        <div class="form-group">
+            <label for="spawn_hint">Spawn Hint</label>
+            <textarea id="spawn_hint" name="spawn_hint">This hint will be shown when you will spawn as a Janitor!</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="spawn_hint_duration">Spawn Hint Duration</label>
+            <input type="number" id="spawn_hint_duration" name="spawn_hint_duration" value="5">
+        </div>
+
+        <div class="form-group">
+            <label for="custom_inventory_limits">Custom Inventory Limits</label>
+            <div id="custom_inventory-limits-container">
+                <div class="custom-inventory-item">
+                    <select class="custom-inventory-item-select">
+                        <option value="Keycard">Keycard</option>
+                        <option value="Medical">Medical</option>
+                        <option value="Radio">Radio</option>
+                        <option value="Firearm">Firearm</option>
+                        <option value="Grenade">Grenade</option>
+                        <option value="SCPItem">SCPItem</option>
+                        <option value="MicroHID">MicroHID</option>
+                        <option value="Ammo">Ammo</option>
+                        <option value="Armor">Armor</option>
+                    </select>
+                    <input type="number" class="inventory-limit-input" placeholder="Limit" min="0">
+                    <button type="button" class="add-item-btn">+</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="inventory">Inventory</label>
+            <div id="inventory-container">
+                <div class="inventory-item">
+                    <select class="inventory-select">
+                        <option value="KeycardJanitor">KeycardJanitor</option>
+                        <option value="KeycardScientist">KeycardScientist</option>
+                        <option value="KeycardResearchCoordinator">KeycardResearchCoordinator</option>
+                        <option value="KeycardZoneManager">KeycardZoneManager</option>
+                        <option value="KeycardGuard">KeycardGuard</option>
+                        <option value="KeycardMTFPrivate">KeycardMTFPrivate</option>
+                        <option value="KeycardContainmentEngineer">KeycardContainmentEngineer</option>
+                        <option value="KeycardMTFOperative">KeycardMTFOperative</option>
+                        <option value="KeycardMTFCaptain">KeycardMTFCaptain</option>
+                        <option value="KeycardFacilityManager">KeycardFacilityManager</option>
+                        <option value="KeycardChaosInsurgency">KeycardChaosInsurgency</option>
+                        <option value="KeycardO5">KeycardO5</option>
+                        <option value="Radio">Radio</option>
+                        <option value="GunCOM15">GunCOM15</option>
+                        <option value="Medkit">Medkit</option>
+                        <option value="Flashlight">Flashlight</option>
+                        <option value="MicroHID">MicroHID</option>
+                        <option value="SCP500">SCP500</option>
+                        <option value="SCP207">SCP207</option>
+                        <option value="Ammo12gauge">Ammo12gauge</option>
+                        <option value="GunE11SR">GunE11SR</option>
+                        <option value="GunCrossvec">GunCrossvec</option>
+                        <option value="Ammo556x45">Ammo556x45</option>
+                        <option value="GunFSP9">GunFSP9</option>
+                        <option value="GunLogicer">GunLogicer</option>
+                        <option value="GrenadeHE">GrenadeHE</option>
+                        <option value="GrenadeFlash">GrenadeFlash</option>
+                        <option value="Ammo44cal">Ammo44cal</option>
+                        <option value="Ammo762x39">Ammo762x39</option>
+                        <option value="Ammo9x19">Ammo9x19</option>
+                        <option value="GunCOM18">GunCOM18</option>
+                        <option value="SCP018">SCP018</option>
+                        <option value="SCP268">SCP268</option>
+                        <option value="Adrenaline">Adrenaline</option>
+                        <option value="Painkillers">Painkillers</option>
+                        <option value="Coin">Coin</option>
+                        <option value="ArmorLight">ArmorLight</option>
+                        <option value="ArmorCombat">ArmorCombat</option>
+                        <option value="ArmorHeavy">ArmorHeavy</option>
+                        <option value="GunRevolver">GunRevolver</option>
+                        <option value="GunAK">GunAK</option>
+                        <option value="GunShotgun">GunShotgun</option>
+                        <option value="SCP330">SCP330</option>
+                        <option value="SCP2176">SCP2176</option>
+                        <option value="SCP244a">SCP244a</option>
+                        <option value="SCP244b">SCP244b</option>
+                        <option value="SCP1853">SCP1853</option>
+                        <option value="ParticleDisruptor">ParticleDisruptor</option>
+                        <option value="GunCom45">GunCom45</option>
+                        <option value="SCP1576">SCP1576</option>
+                        <option value="Jailbird">Jailbird</option>
+                        <option value="AntiSCP207">AntiSCP207</option>
+                        <option value="GunFRMG0">GunFRMG0</option>
+                        <option value="GunA7">GunA7</option>
+                        <option value="Lantern">Lantern</option>
+                        <option value="Snowball">Snowball</option>
+                        <option value="Coal">Coal</option>
+                        <option value="SpecialCoal">SpecialCoal</option>
+                        <option value="Tape">Tape</option>
+                    </select>
+                    <button type="button" class="add-inventory-btn">+</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="custom_items_inventory">Custom Items Inventory (comma-separated)</label>
+            <input type="text" id="custom_items_inventory" name="custom_items_inventory">
+        </div>
+
+        <div class="form-group">
+            <label>Ammo</label>
+
+            <div class="form-group">
+                <label for="ammo_nato9">Nato9</label>
+                <input type="number" id="ammo_nato9" name="ammo_nato9" value="10">
+            </div>
+
+            <div class="form-group">
+                <label for="ammo_nato556">Nato556</label>
+                <input type="number" id="ammo_nato556" name="ammo_nato556" value="10">
+            </div>
+
+            <div class="form-group">
+                <label for="ammo_nato762">Nato762</label>
+                <input type="number" id="ammo_nato762" name="ammo_nato762" value="10">
+            </div>
+
+            <div class="form-group">
+                <label for="ammo_12gauge">12 Gauge</label>
+                <input type="number" id="ammo_12gauge" name="ammo_12gauge" value="10">
+            </div>
+
+            <div class="form-group">
+                <label for="ammo_44cal">.44 Caliber</label>
+                <input type="number" id="ammo_44cal" name="ammo_44cal" value="10">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="damage_multiplier">Damage Multiplier</label>
+            <input type="number" step="0.1" id="damage_multiplier" name="damage_multiplier" value="1">
+        </div>
+
+    <div class="form-group">
+        <label>Spawn Settings</label>
+
+        <div class="form-group">
+            <label for="can_replace_roles">Can Replace Roles (comma-separated)</label>
+            <input type="text" id="can_replace_roles" name="can_replace_roles" value="ClassD">
+        </div>
+
+        <div class="form-group">
+            <label for="max_players">Max Players</label>
+            <input type="number" id="max_players" name="max_players" value="10">
+        </div>
+
+        <div class="form-group">
+            <label for="min_players">Min Players</label>
+            <input type="number" id="min_players" name="min_players" value="1">
+        </div>
+
+        <div class="form-group">
+            <label for="spawn_chance">Spawn Chance (%)</label>
+            <input type="number" id="spawn_chance" name="spawn_chance" value="60">
+        </div>
+
+        <div class="form-group">
+            <label for="spawn">Spawn</label>
+            <select id="spawn" name="spawn">
+                <option value="CompleteRandomSpawn">CompleteRandomSpawn</option>
+                <option value="ZoneSpawn">ZoneSpawn</option>
+                <option value="RoomsSpawn" selected>RoomsSpawn</option>
+                <option value="KeepRoleSpawn">KeepRoleSpawn</option>
+                <option value="KeepCurrentPositionSpawn">KeepCurrentPositionSpawn</option>
+                <option value="SpawnPointSpawn">SpawnPointSpawn</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="spawn_zones">Spawn Zones</label>
+            <select id="spawn_zones" name="spawn_zones">
+                <option value="Unspecified">Unspecified</option>
+                <option value="LightContainment">LightContainment</option>
+                <option value="HeavyContainment">HeavyContainment</option>
+                <option value="Entrance">Entrance</option>
+                <option value="Surface">Surface</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="spawn-rooms-dropdown">Spawn Rooms</label>
+            <select id="spawn-rooms-dropdown">
+                <option value="">Select a spawn room</option>
+                <option value="LczArmory">LczArmory</option>
+                <option value="LczCurve">LczCurve</option>
+                <option value="LczStraight">LczStraight</option>
+                <option value="Lcz330">Lcz330</option>
+                <option value="Lcz914">Lcz914</option>
+                <option value="LczCrossing">LczCrossing</option>
+                <option value="LczTCross">LczTCross</option>
+                <option value="LczCafe">LczCafe</option>
+                <option value="LczPlants">LczPlants</option>
+                <option value="LczToilets">LczToilets</option>
+                <option value="LczAirlock">LczAirlock</option>
+                <option value="Lcz173">Lcz173</option>
+                <option value="LczClassDSpawn">LczClassDSpawn</option>
+                <option value="LczCheckpointB">LczCheckpointB</option>
+                <option value="LczGlassBox">LczGlassBox</option>
+                <option value="LczCheckpointA">LczCheckpointA</option>
+                <option value="Hcz079">Hcz079</option>
+                <option value="HczEzCheckpointA">HczEzCheckpointA</option>
+                <option value="HczEzCheckpointB">HczEzCheckpointB</option>
+                <option value="HczArmory">HczArmory</option>
+                <option value="Hcz939">Hcz939</option>
+                <option value="HczHid">HczHid</option>
+                <option value="Hcz049">Hcz049</option>
+                <option value="HczChkpA">HczChkpA</option>
+                <option value="HczCrossing">HczCrossing</option>
+                <option value="Hcz106">Hcz106</option>
+                <option value="HczNuke">HczNuke</option>
+                <option value="HczTesla">HczTesla</option>
+                <option value="HczTestRoom">HczTestRoom</option>
+                <option value="HczElevatorA">HczElevatorA</option>
+                <option value="HczElevatorB">HczElevatorB</option>
+                <option value="HczServers">HczServers</option>
+                <option value="HczChkpB">HczChkpB</option>
+                <option value="HczTCross">HczTCross</option>
+                <option value="HczCurve">HczCurve</option>
+                <option value="Hcz096">Hcz096</option>
+                <option value="EzVent">EzVent</option>
+                <option value="EzIntercom">EzIntercom</option>
+                <option value="EzGateA">EzGateA</option>
+                <option value="EzDownstairsPcs">EzDownstairsPcs</option>
+                <option value="EzCurve">EzCurve</option>
+                <option value="EzPcs">EzPcs</option>
+                <option value="EzCrossing">EzCrossing</option>
+                <option value="EzCollapsedTunnel">EzCollapsedTunnel</option>
+                <option value="EzConference">EzConference</option>
+                <option value="EzStraight">EzStraight</option>
+                <option value="EzCafeteria">EzCafeteria</option>
+                <option value="EzUpstairsPcs">EzUpstairsPcs</option>
+                <option value="EzGateB">EzGateB</option>
+                <option value="EzShelter">EzShelter</option>
+                <option value="Pocket">Pocket</option>
+                <option value="Surface">Surface</option>
+                <option value="EzCheckpointHallway">EzCheckpointHallway</option>
+                <option value="HczTestRoom">HczTestRoom</option>
+            </select>
+            <button type="button" id="add-spawn-room">Add Spawn Room</button>
+            <ul id="spawn-rooms-list"></ul>
+        </div>
+
+
+        <div class="form-group">
+            <label for="spawn_points">Spawn Points (comma-separated)</label>
+            <input type="text" id="spawn_points" name="spawn_points">
+        </div>
+
+        <div class="form-group">
+            <label for="required_permission">Required Permission</label>
+            <input type="text" id="required_permission" name="required_permission" value="">
+        </div>
+    </div>
+
+        <div class="form-group">
+            <label for="custom_flags">Custom Flags</label>
+            <div id="custom-flags-container">
+                <select id="custom-flags-dropdown" name="custom_flags" class="custom-flags-dropdown">
+                    <option value="">Select a flag</option>
+                    <option value="DoNotTriggerTeslaGates">DoNotTriggerTeslaGates</option>
+                    <option value="LifeStealer">LifeStealer</option>
+                    <option value="HalfLifeStealer">HalfLifeStealer</option>
+                    <option value="NotAffectedByAppearance">NotAffectedByAppearance</option>
+                    <option value="PacifismUntilDamage">PacifismUntilDamage</option>
+                    <option value="CustomScpAnnouncer">CustomScpAnnouncer</option>
+                    <option value="ShowOnlyCustomInfo">ShowOnlyCustomInfo</option>
+                    <option value="SilentWalker">SilentWalker</option>
+                    <option value="SilentAnnouncer">SilentAnnouncer</option>
+                    <option value="TutorialRagdoll">TutorialRagdoll</option>
+                    <option value="DoNotTrigger096">DoNotTrigger096</option>
+                    <option value="BanKeycards">BanKeycards</option>
+                    <option value="BanMedicals">BanMedicals</option>
+                    <option value="BanRadios">BanRadios</option>
+                    <option value="BanFirearms">BanFirearms</option>
+                    <option value="BanGrenades">BanGrenades</option>
+                    <option value="BanSCPItems">BanSCPItems</option>
+                    <option value="BanMicroHID">BanMicroHID</option>
+                    <option value="BanArmors">BanArmors</option>
+                </select>
+                <button type="button" id="add-custom-flag">Add Flag</button>
+            </div>
+            <ul id="custom-flags-list"></ul>
+        </div>
+
+
+        <div class="form-group">
+            <label for="ignore_spawn_system">Ignore Spawn System</label>
+            <input type="checkbox" id="ignore_spawn_system" name="ignore_spawn_system">
+        </div>
+
+        <button type="button" onclick="generateRole()">Generate Role</button>
+    </form>
+<script>
+document.getElementById("add-spawn-room").addEventListener("click", () => {
+    const dropdown = document.getElementById("spawn-rooms-dropdown");
+    const selectedRoom = dropdown.value;
+
+    if (selectedRoom) {
+        const listItem = document.createElement("li");
+        listItem.textContent = selectedRoom;
+
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "Remove";
+        removeButton.style.marginLeft = "10px";
+        removeButton.addEventListener("click", () => {
+            listItem.remove();
+        });
+
+        listItem.appendChild(removeButton);
+
+        document.getElementById("spawn-rooms-list").appendChild(listItem);
+
+        dropdown.value = "";
+    } else {
+        alert("Please select a spawn room before adding.");
+    }
+});
+
+const gatherSpawnRooms = () => {
+    const spawnRoomsList = document.querySelectorAll("#spawn-rooms-list li");
+    const spawnRooms = [];
+
+    spawnRoomsList.forEach(item => {
+        const roomName = item.firstChild.textContent;
+        spawnRooms.push(`  - ${roomName}`);
+    });
+
+    return `spawn_rooms:\n${spawnRooms.join("\n")}`;
+};
+
+
+document.getElementById("add-custom-flag").addEventListener("click", () => {
+    const dropdown = document.getElementById("custom-flags-dropdown");
+    const selectedFlag = dropdown.value;
+
+    if (selectedFlag) {
+        const listItem = document.createElement("li");
+        listItem.textContent = selectedFlag;
+
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "Remove";
+        removeButton.style.marginLeft = "10px";
+        removeButton.addEventListener("click", () => {
+            listItem.remove();
+        });
+
+        listItem.appendChild(removeButton);
+
+        document.getElementById("custom-flags-list").appendChild(listItem);
+
+        dropdown.value = "";
+    } else {
+        alert("Please select a flag before adding.");
+    }
+});
+
+const gatherCustomFlags = () => {
+    const customFlagsList = document.querySelectorAll("#custom-flags-list li");
+    const customFlags = [];
+
+    customFlagsList.forEach(item => {
+        const flagName = item.firstChild.textContent;
+        customFlags.push(flagName);
+    });
+
+    return customFlags.join(", ");
+};
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const effectsContainer = document.getElementById("effects-container");
+    const addEffectBtn = document.getElementById("add-effect-btn");
+
+    const effectsList = [
+        "AmnesiaItems", "AmnesiaVision", "Asphyxiated", "Bleeding", "Blinded", "Burned", "Concussed",
+        "Corroding", "Deafened", "Decontaminating", "Disabled", "Ensnared", "Exhausted", "Flashed",
+        "Hemorrhage", "Invigorated", "BodyshotReduction", "Poisoned", "Scp207", "Invisible", "SinkHole",
+        "DamageReduction", "MovementBoost", "RainbowTaste", "SeveredHands", "Stained", "Vitality",
+        "Hypothermia", "Scp1853", "CardiacArrest", "InsufficientLighting", "SoundtrackMute",
+        "SpawnProtected", "Traumatized", "AntiScp207", "Scanned", "PocketCorroding", "SilentWalk",
+        "Marshmallow (Obsolete)", "Strangled", "Ghostly"
+    ];
+
+    addEffectBtn.addEventListener("click", function () {
+        const effectDiv = document.createElement("div");
+        effectDiv.classList.add("effect-item");
+
+        const effectDropdown = document.createElement("select");
+        effectDropdown.classList.add("effect-dropdown");
+        effectDropdown.name = "effect";
+
+        effectsList.forEach(effect => {
+            const option = document.createElement("option");
+            option.value = effect;
+            option.textContent = effect;
+            effectDropdown.appendChild(option);
+        });
+
+        const durationInput = document.createElement("input");
+        durationInput.type = "number";
+        durationInput.name = "duration";
+        durationInput.placeholder = "Duration (seconds)";
+        durationInput.min = 0;
+        durationInput.classList.add("effect-duration");
+
+        const intensityInput = document.createElement("input");
+        intensityInput.type = "number";
+        intensityInput.name = "intensity";
+        intensityInput.placeholder = "Intensity";
+        intensityInput.min = 0;
+        intensityInput.classList.add("effect-intensity");
+
+        const removableCheckbox = document.createElement("input");
+        removableCheckbox.type = "checkbox";
+        removableCheckbox.name = "removable";
+        removableCheckbox.classList.add("effect-removable");
+        const removableLabel = document.createElement("label");
+        removableLabel.textContent = "Removable";
+
+        const removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.textContent = "Remove";
+        removeButton.classList.add("remove-effect-btn");
+
+        removeButton.addEventListener("click", function () {
+            effectDiv.remove();
+        });
+
+        effectDiv.appendChild(effectDropdown);
+        effectDiv.appendChild(durationInput);
+        effectDiv.appendChild(intensityInput);
+        effectDiv.appendChild(removableCheckbox);
+        effectDiv.appendChild(removableLabel);
+        effectDiv.appendChild(removeButton);
+        effectsContainer.appendChild(effectDiv);
+    });
+});
+
+function generateRole() {
+    const form = document.getElementById("yamlForm");
+    const formData = new FormData(form);
+
+    const parseCommaSeparated = (input) => input ? input.split(",").map(item => item.trim()) : [];
+
+    const gatherCustomInventoryLimits = () => {
+        const inventoryItems = document.querySelectorAll(".custom-inventory-item");
+        const customInventoryLimits = {};
+
+        inventoryItems.forEach(item => {
+            const selectElement = item.querySelector(".custom-inventory-item-select");
+            const limitInputElement = item.querySelector(".inventory-limit-input");
+
+            if (selectElement && limitInputElement) {
+                const selectedItem = selectElement.value;
+                const limit = limitInputElement.value;
+                if (selectedItem && limit) {
+                    customInventoryLimits[selectedItem] = Number(limit);
+                }
+            }
+        });
+
+        return customInventoryLimits;
+    };
+
+    const gatherInventoryItems = () => {
+        const inventoryItems = document.querySelectorAll(".inventory-item");
+        const inventory = [];
+
+        inventoryItems.forEach(item => {
+            const selectElement = item.querySelector(".inventory-item-select");
+
+            if (selectElement) {
+                const selectedItem = selectElement.value;
+                if (selectedItem) {
+                    inventory.push(selectedItem);
+                }
+            }
+        });
+
+        return inventory;
+    };
+
+    const gatherEffects = () => {
+        const effectItems = document.querySelectorAll(".effect-item");
+            return Array.from(effectItems).map(item => {
+                const effect_type = item.querySelector(".effect-dropdown").value;
+                const duration = parseInt(item.querySelector(".effect-duration").value) || 0;
+                const intensity = parseInt(item.querySelector(".effect-intensity").value) || 0;
+                const removable = item.querySelector(".effect-removable").checked;
+
+                return { effect_type, duration, intensity, removable };
+            });
+        };
+
+    const yamlData = {
+        id: parseInt(formData.get("id")),
+        name: formData.get("name"),
+        nickname: formData.get("nickname") || null,
+        custom_info: formData.get("custom_info") || null,
+        badge_name: formData.get("badge_name"),
+        badge_color: formData.get("badge_color"),
+        role: formData.get("role"),
+        team: formData.get("team"),
+        role_appearance: formData.get("role_appearance"),
+        is_friend_of: parseCommaSeparated(formData.get("is_friend_of")),
+        health: {
+            amount: parseInt(formData.get("health_amount")),
+            maximum: parseInt(formData.get("health_maximum")),
+        },
+        hume_shield: parseInt(formData.get("hume_shield")),
+        hume_shield_regeneration: {
+            amount: parseFloat(formData.get("hume_shield_regeneration_amout")),
+            delay: parseFloat(formData.get("hume_shield_regeneration_delay")),
+        },
+        ahp: {
+            amount: parseInt(formData.get("ahp_amount")),
+            limit: parseInt(formData.get("ahp_limit")),
+            decay: parseFloat(formData.get("ahp_decay")),
+            efficacy: parseFloat(formData.get("ahp_efficacy")),
+            sustain: parseInt(formData.get("ahp_sustain")),
+            persistent: formData.get("ahp_persistant") === "on",
+        },
+        effects: gatherEffects(),
+        stamina: {
+            regen_multiplier: parseFloat(formData.get("stamina_regen_multiplier")),
+            usage_multiplier: parseFloat(formData.get("stamina_usage_multiplier")),
+            infinite: formData.get("stamina_infinite") === "on",
+        },
+        max_scp330_candies: parseInt(formData.get("max_scp330_candies")),
+        can_escape: formData.get("can_escape") === "on",
+        role_after_escape: {
+            default: `InternalRole ${formData.get("normal_escape")}`,
+            ...(formData.get("cuffed_escape_team") && formData.get("cuffed_escape_role") ? {
+                [`cuffed by InternalTeam ${formData.get("cuffed_escape_team")}`]: `InternalRole ${formData.get("cuffed_escape_role")}`
+            } : {})
+        },
+        scale: (() => {
+            const scaleValues = parseCommaSeparated(formData.get("scale")).map(Number);
+            return {
+                x: scaleValues[1] || 1,
+                y: scaleValues[1] || 1,
+                z: scaleValues[1] || 1,
+            };
+        })(),
+
+
+        spawn_broadcast: formData.get("spawn_broadcast"),
+        spawn_broadcast_duration: parseInt(formData.get("spawn_broadcast_duration")),
+        spawn_hint: formData.get("spawn_hint"),
+        spawn_hint_duration: parseInt(formData.get("spawn_hint_duration")),
+        custom_inventory_limits: gatherCustomInventoryLimits(),
+        inventory: gatherInventoryItems(),
+        custom_items_inventory: parseCommaSeparated(formData.get("custom_items_inventory")),
+        ammo: {
+            Nato9: parseInt(formData.get("ammo_nato9")),
+            Nato556: parseInt(formData.get("ammo_nato556")),
+            Nato762: parseInt(formData.get("ammo_nato762")),
+            Ammo12Gauge: parseInt(formData.get("ammo_12gauge")),
+            Ammo44Cal: parseInt(formData.get("ammo_44cal")),
+        },
+        damage_multiplier: parseFloat(formData.get("damage_multiplier")),
+        spawn_settings: {
+            can_replace_roles: parseCommaSeparated(formData.get("can_replace_roles")),
+            max_players: parseInt(formData.get("max_players")),
+            min_players: parseInt(formData.get("min_players")),
+            spawn_chance: parseInt(formData.get("spawn_chance")),
+            spawn: formData.get("spawn"),
+            spawn_zones: parseCommaSeparated(formData.get("spawn_zones")),
+            spawn_rooms: gatherSpawnRooms(),
+            spawn_points: parseCommaSeparated(formData.get("spawn_points")),
+            required_permission: formData.get("required_permission"),
+        },
+        custom_flags: gatherCustomFlags(),
+        ignore_spawn_system: formData.get("ignore_spawn_system") === "on",
+    };
+
+    const yamlString = jsyaml.dump(yamlData, { noRefs: true, indent: 2 });
+
+    const yamlOutput = document.createElement("pre");
+    yamlOutput.textContent = yamlString;
+    document.body.appendChild(yamlOutput);
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const addItemBtn = document.querySelector(".add-item-btn");
+    const container = document.getElementById("custom_inventory-limits-container");
+    const inventoryContainer = document.getElementById("inventory-container");
+
+    function addInventoryItem() {
+        const inventoryItem = document.createElement('div');
+        inventoryItem.classList.add('inventory-item');
+
+        const select = document.createElement('select');
+        select.classList.add('inventory-item-select');
+        const options = [
+            "None", "KeycardJanitor", "KeycardScientist", "KeycardResearchCoordinator", "KeycardZoneManager",
+            "KeycardGuard", "KeycardMTFPrivate", "KeycardContainmentEngineer", "KeycardMTFOperative", 
+            "KeycardMTFCaptain", "KeycardFacilityManager", "KeycardChaosInsurgency", "KeycardO5", "Radio", 
+            "GunCOM15", "Medkit", "Flashlight", "MicroHID", "SCP500", "SCP207", "Ammo12gauge", "GunE11SR", 
+            "GunCrossvec", "Ammo556x45", "GunFSP9", "GunLogicer", "GrenadeHE", "GrenadeFlash", "Ammo44cal", 
+            "Ammo762x39", "Ammo9x19", "GunCOM18", "SCP018", "SCP268", "Adrenaline", "Painkillers", "Coin", 
+            "ArmorLight", "ArmorCombat", "ArmorHeavy", "GunRevolver", "GunAK", "GunShotgun", "SCP330", 
+            "SCP2176", "SCP244a", "SCP244b", "SCP1853", "ParticleDisruptor", "GunCom45", "SCP1576", 
+            "Jailbird", "AntiSCP207", "GunFRMG0", "GunA7", "Lantern", "Snowball", "Coal", "SpecialCoal", "Tape"
+        ];
+
+        options.forEach(optionValue => {
+            const option = document.createElement('option');
+            option.value = optionValue;
+            option.textContent = optionValue;
+            select.appendChild(option);
+        });
+
+        inventoryItem.appendChild(select);
+
+        const addButton = document.createElement('button');
+        addButton.type = 'button';
+        addButton.classList.add('add-inventory-btn');
+        addButton.textContent = '+';
+        addButton.addEventListener('click', addInventoryItem);
+        inventoryItem.appendChild(addButton);
+
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.classList.add('remove-item-btn');
+        removeButton.textContent = '-';
+        removeButton.addEventListener('click', function() {
+            inventoryItem.remove();
+        });
+
+        inventoryItem.appendChild(removeButton);
+
+        inventoryContainer.appendChild(inventoryItem);
+    }
+
+
+    addItemBtn.addEventListener("click", function() {
+        const newItemDiv = document.createElement("div");
+        newItemDiv.classList.add("custom-inventory-item");
+
+        const selectDropdown = document.createElement("select");
+        selectDropdown.classList.add("custom-inventory-item-select");
+        const options = [
+            "Keycard", "Medical", "Radio", "Firearm", "Grenade", "SCPItem", "MicroHID", "Ammo", "Armor"
+        ];
+        options.forEach(option => {
+            const optionElement = document.createElement("option");
+            optionElement.value = option;
+            optionElement.textContent = option;
+            selectDropdown.appendChild(optionElement);
+        });
+
+        const limitInput = document.createElement("input");
+        limitInput.type = "number";
+        limitInput.classList.add("inventory-limit-input");
+        limitInput.placeholder = "Limit";
+        limitInput.min = 0;
+
+        const removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.classList.add("remove-item-btn");
+        removeButton.textContent = "-";
+
+        newItemDiv.appendChild(selectDropdown);
+        newItemDiv.appendChild(limitInput);
+        newItemDiv.appendChild(removeButton);
+
+        container.appendChild(newItemDiv);
+
+        removeButton.addEventListener("click", function() {
+            newItemDiv.remove();
+        });
+    });
+});
+
+
+</script>
