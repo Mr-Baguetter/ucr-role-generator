@@ -6,7 +6,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://cdn.thaumielscpsl.site/thaumielsecurity.png">
     <title>UCR Role Generator</title>
+    <meta name="description" content="UCR Role Generator: Easily create UCR roles.">
+    <meta property="og:url" content="https://thaumielscpsl.site/ucr/generator">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="UCR Role Generator">
+    <meta property="og:description" content="UCR Role Generator: Easily create UCR roles.">
+    <meta content="https://cdn.thaumielscpsl.site/thaumielsecurity.png" property="og:image" />
+    <meta property="twitter:domain" content="thaumielscpsl.site">
+    <meta property="twitter:url" content="https://thaumielscpsl.site/ucr/generator">
+    <meta name="twitter:title" content="UCR Role Generator">
+    <meta name="twitter:description" content="UCR Role Generator: Easily create UCR roles.">
+    <meta name="twitter:image" content="https://cdn.thaumielscpsl.site/thaumielsecurity.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -91,9 +103,7 @@ textarea {
 }
 
 input[type="checkbox"] {
-    width: auto;
     margin-top: 8px;
-    margin-right: 90%;
 }
 
 button {
@@ -840,7 +850,6 @@ form .form-group input[type="number"] {
                 </div>
                 <button type="button" id="add-custom-flag">Add Flag</button>
                 <ul id="custom-flags-list"></ul>
-                <p>If a custom flag isn't selected, you must remove the from the '' from the custom_flags: field in the custom role file.</p>
             </div>
         </div>
         <div id="form6" class="tab-content">
@@ -927,7 +936,7 @@ form .form-group input[type="number"] {
                 <input type="checkbox" id="ignore_spawn_system" name="ignore_spawn_system">
             </div>
         </div>
-
+        <p>If a custom flag isn't selected, you must remove the from the '' from the custom_flags: field in the custom role file.</p>
         <button type="button" onclick="generateRole()">Generate Role</button>
     </form>
 </div>
@@ -1180,17 +1189,18 @@ document.addEventListener("DOMContentLoaded", function () {
         intensityInput.min = 0;
         intensityInput.classList.add("effect-intensity");
 
+        const removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.textContent = "Remove";
+        removeButton.style.width = "10%";
+        removeButton.classList.add("remove-effect-btn");
+
         const removableCheckbox = document.createElement("input");
         removableCheckbox.type = "checkbox";
         removableCheckbox.name = "removable";
         removableCheckbox.classList.add("effect-removable");
         const removableLabel = document.createElement("label");
         removableLabel.textContent = "Removable";
-
-        const removeButton = document.createElement("button");
-        removeButton.type = "button";
-        removeButton.textContent = "Remove";
-        removeButton.classList.add("remove-effect-btn");
 
         removeButton.addEventListener("click", function () {
             effectDiv.remove();
@@ -1199,9 +1209,9 @@ document.addEventListener("DOMContentLoaded", function () {
         effectDiv.appendChild(effectDropdown);
         effectDiv.appendChild(durationInput);
         effectDiv.appendChild(intensityInput);
+        effectDiv.appendChild(removeButton);
         effectDiv.appendChild(removableCheckbox);
         effectDiv.appendChild(removableLabel);
-        effectDiv.appendChild(removeButton);
         effectsContainer.appendChild(effectDiv);
     });
 });
