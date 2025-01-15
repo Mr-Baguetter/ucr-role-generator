@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UCR Role Generator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
@@ -9,264 +12,380 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        textarea {
-            width: 100%;
-            height: 100px;
-        }
+html, body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    background-color: #f4f4f4;
+    background: #f4f4f4;
+    background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"%3E%3Crect width="40" height="40" fill="%230e1015"/%3E%3Ccircle cx="10" cy="10" r="2" fill="purple"/%3E%3Ccircle cx="30" cy="30" r="2" fill="purple"/%3E%3Ccircle cx="30" cy="10" r="2" fill="purple"/%3E%3Ccircle cx="10" cy="30" r="2" fill="purple"/%3E%3Cline x1="40" y1="40" x2="0" y2="0" stroke="purple" stroke-width="1" stroke-dasharray="1"/%3E%3Cline x1="40" y1="0" x2="0" y2="40" stroke="purple" stroke-width="1" stroke-dasharray="1"/%3E%3C/svg%3E');
+    background-size: 40px 40px;
+    height: 100%;
+    color: white;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.container {
+    background-color: #0E1015;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    width: 90%;
+    max-width: 90%;
+    max-height: 100%;
+}
+
+header {
+    background-color: #0E1015;
+    color: white;
+    padding: .7rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header img {
+    height: 60px;
+    margin-right: 10px;
+    border-radius: 45%;
+}
+
+header span {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 40%;
+    box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+    width: auto;
+    margin-top: 8px;
+    margin-right: 90%;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 40%;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+select {
+    height: 35px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+#effects-container, 
+#inventory-container,
+#custom_inventory-limits-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.custom-inventory-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.inventory-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.custom-inventory-item select,
+.inventory-limit-input {
+    width: 150px;
+}
+
+.add-item-btn,
+.add-inventory-btn {
+    font-size: 18px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.add-item-btn:hover,
+.add-inventory-btn:hover {
+    background-color: #28a745;
+}
+
+.add-item-btn:focus,
+.add-inventory-btn:focus {
+    outline: none;
+}
+
+input[type="checkbox"] {
+    margin-top: 8px;
+}
+
+form {
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+form .form-group input[type="number"] {
+    max-width: 200px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+.add-item-btn, .remove-item-btn {
+    width: 17%;
+}
+.remove-inventory-btn {
+    background-color: #ff4c4c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.remove-inventory-btn:hover {
+    background-color: #e63946;
+}
+.tabs {
+    display: flex;
+    cursor: pointer;
+    padding: 10px;
+    border-bottom: 2px solid white;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    margin-right: 5px;
+    background-color: #181A20;
+    border: 1px solid white;
+    border-radius: 5px 5px 0 0;
+    transition: background-color 0.3s;
+    background-color: ;
+}
+
+.tab-button:hover {
+    background-color: #181A20;
+}
+
+.tab-button.active {
+    background-color: #181A20;
+    border-bottom: none;
+    font-weight: bold;
+}
+
+.tab-content {
+    display: none;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+}
+
+.tab-content.active {
+    display: block;
+}
+.above {
+    z-index: 1001;
+    font-weight: 700;
+}
+.HButton1 {
+    padding: 10px 20px;
+    font-size: 1.5em;
+    color: white;
+    font-weight: 300;
+    background-color: #0E1015;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 20px;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+.HButton1:hover {
+    transform: scale(1.1);
+}
+.contact-link {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.contact-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+.popup-content {
+    background-color: #0E1015;
+    padding: 20px;
+    color: white;
+    border-radius: 10px;
+    width: 60em;
+    height: 10em;
+    margin: 100px auto;
+}
+
+.close-popup {
+    padding: 8px 16px;
+    background-color: #f44336;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
     </style>
 </head>
 <body>
+    <header>
+        <img src="https://cdn.thaumielscpsl.site/thaumielsecurity.webp" alt="Thaumiel Security Logo">
+        <span class="above">Thaumiel</span>
+        <a href="https://status.thaumielscpsl.site/" class="HButton1">Status</a>
+        <a href="#" class="HButton1" id="contactLink">Contact Us</a>
+    </header>
+
+<div id="contactPopup" class="contact-popup">
+    <div class="popup-content">
+        <h2>Need to contact us?</h2>
+        <p>Email us at <a href="mailto:contact@thaumielscpsl.site">contact@thaumielscpsl.site</a> or for security matters you can email us at <a href="mailto:security@thaumielscpsl.site">security@thaumielscpsl.site</a></p>
+        <a href="#" id="closePopup" class="close-popup">Close</a>
+    </div>
+</div>
 <div class="container">
     <form id="yamlForm">
-        <div class="form-group">
-            <label for="id">ID</label>
-            <input type="number" id="id" name="id" required>
+    <div class="form-container">
+        <div class="tabs">
+            <div class="tab-button active" onclick="showTab('form1')">Basic</div>
+            <div class="tab-button" onclick="showTab('form2')">Appearance</div>
+            <div class="tab-button" onclick="showTab('form3')">Health & Effects</div>
+            <div class="tab-button" onclick="showTab('form4')">Escape</div>
+            <div class="tab-button" onclick="showTab('form5')">Spawning</div>
+            <div class="tab-button" onclick="showTab('form6')">Inventory</div>
+            <div class="tab-button" onclick="showTab('form7')">Misc</div>
         </div>
 
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" required>
-        </div>
-
-        <div class="form-group">
-            <label for="nickname">Nickname</label>
-            <input type="text" id="nickname" name="nickname">
-        </div>
-
-        <div class="form-group">
-            <label for="custom_info">Custom Info</label>
-            <input type="text" id="custom_info" name="custom_info">
-        </div>
-
-        <div class="form-group">
-            <label for="badge_name">Badge Name</label>
-            <input type="text" id="badge_name" name="badge_name">
-        </div>
-
-        <div class="form-group">
-            <label for="badge_color">Badge Color</label>
-            <select id="badge_color" name="badge_color">
-                <option value="">None</option>
-                <option value="pumpkin">Pumpkin</option>
-                <option value="blue">Blue</option>
-                <option value="red">Red</option>
-                <option value="pink">Pink</option>
-                <option value="brown">Brown</option>
-                <option value="silver">Silver</option>
-                <option value="light_green">Light Green</option>
-                <option value="crimson">Crimson</option>
-                <option value="cyan">Cyan</option>
-                <option value="aqua">Aqua</option>
-                <option value="deep_pink">Deep Pink</option>
-                <option value="tomato">Tomato</option>
-                <option value="yellow">Yellow</option>
-                <option value="magenta">Magenta</option>
-                <option value="blue_green">Blue Green</option>
-                <option value="orange">Orange</option>
-                <option value="lime">Lime</option>
-                <option value="green">Green</option>
-                <option value="emerald">Emerald</option>
-                <option value="carmine">Carmine</option>
-                <option value="nickel">Nickel</option>
-                <option value="mint">Mint</option>
-                <option value="army_green">Army Green</option>
-            </select>
-        </div>
-
-
-        <div class="form-group">
-            <label for="role">Role</label>
-            <select id="role" name="role">
-                <option value="ClassD">ClassD</option>
-                <option value="Scientist">Scientist</option>
-                <option value="Guard">Guard</option>
-                <option value="Scp173">Scp173</option>
-                <option value="Spectator">Spectator</option>
-                <option value="Scp106">Scp106</option>
-                <option value="NtfSpecialist">NtfSpecialist</option>
-                <option value="Scp049">Scp049</option>
-                <option value="Scp079">Scp079</option>
-                <option value="ChaosConscript">ChaosConscript</option>
-                <option value="Scp096">Scp096</option>
-                <option value="Scp0492">Scp0492</option>
-                <option value="NtfSergeant">NtfSergeant</option>
-                <option value="NtfCaptain">NtfCaptain</option>
-                <option value="NtfPrivate">NtfPrivate</option>
-                <option value="Tutorial">Tutorial</option>
-                <option value="FacilityGuard">FacilityGuard</option>
-                <option value="Scp939">Scp939</option>
-                <option value="ChaosRifleman">ChaosRifleman</option>
-                <option value="ChaosMarauder">ChaosMarauder</option>
-                <option value="ChaosRepressor">ChaosRepressor</option>
-                <option value="Overwatch">Overwatch</option>
-                <option value="Filmmaker">Filmmaker</option>
-                <option value="Scp3114">Scp3114 (obsolete)</option>
-                <option value="Flamingo">Flamingo (obsolete)</option>
-                <option value="AlphaFlamingo">AlphaFlamingo (obsolete)</option>
-                <option value="ZombieFlamingo">ZombieFlamingo (obsolete)</option>
-            </select>
-        </div>
-
-
-        <div class="form-group">
-            <label for="team">Team</label>
-            <select id="team" name="team">
-                <option value="" selected>None</option>
-                <option value="FoundationForces">MTF</option>
-                <option value="SCPs">SCP</option>
-                <option value="ChaosInsurgency">Chaos Insurgency</option>
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label for="role_appearance">Role Appearance</label>
-            <select id="role_appearance" name="role_appearance">
-                <option value="ClassD">ClassD</option>
-                <option value="Scientist">Scientist</option>
-                <option value="Guard">Guard</option>
-                <option value="Scp173">Scp173</option>
-                <option value="Spectator">Spectator</option>
-                <option value="Scp106">Scp106</option>
-                <option value="NtfSpecialist">NtfSpecialist</option>
-                <option value="Scp049">Scp049</option>
-                <option value="Scp079">Scp079</option>
-                <option value="ChaosConscript">ChaosConscript</option>
-                <option value="Scp096">Scp096</option>
-                <option value="Scp0492">Scp0492</option>
-                <option value="NtfSergeant">NtfSergeant</option>
-                <option value="NtfCaptain">NtfCaptain</option>
-                <option value="NtfPrivate">NtfPrivate</option>
-                <option value="Tutorial">Tutorial</option>
-                <option value="FacilityGuard">FacilityGuard</option>
-                <option value="Scp939">Scp939</option>
-                <option value="ChaosRifleman">ChaosRifleman</option>
-                <option value="ChaosMarauder">ChaosMarauder</option>
-                <option value="ChaosRepressor">ChaosRepressor</option>
-                <option value="Overwatch">Overwatch</option>
-                <option value="Filmmaker">Filmmaker</option>
-                <option value="Scp3114">Scp3114 (obsolete)</option>
-                <option value="Flamingo">Flamingo (obsolete)</option>
-                <option value="AlphaFlamingo">AlphaFlamingo (obsolete)</option>
-                <option value="ZombieFlamingo">ZombieFlamingo (obsolete)</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="is_friend_of">Is Friend Of</label>
-            <select id="is_friend_of" name="is_friend_of">
-                <option value="" selected>None</option>
-                <option value="FoundationForces">MTF</option>
-                <option value="SCPs">SCP</option>
-                <option value="ChaosInsurgency">Chaos Insurgency</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="health_amount">Health (Amount)</label>
-            <input type="number" id="health_amount" name="health_amount" value="100">
-        </div>
-
-        <div class="form-group">
-            <label for="health_maximum">Health (Maximum)</label>
-            <input type="number" id="health_maximum" name="health_maximum" value="100">
-        </div>
-
-        <div class="form-group">
-            <label for="hume_shield">Hume Shield</label>
-            <input type="number" id="hume_shield" name="hume_shield" value="0">
-        </div>
-
-        <div class="form-group">
-            <label for="hume_shield_regeneration_amout">Hume Shield Regeneration Amount</label>
-            <input type="number" step="0.1" id="hume_shield_regeneration_amout" name="hume_shield_regeneration_amout" value="2">
-        </div>
-
-        <div class="form-group">
-            <label for="hume_shield_regeneration_delay">Hume Shield Regeneration Delay</label>
-            <input type="number" step="0.1" id="hume_shield_regeneration_delay" name="hume_shield_regeneration_delay" value="7.5">
-        </div>
-
-        <div class="form-group">
-            <label for="ahp_amount">AHP Amount</label>
-            <input type="number" id="ahp_amount" name="ahp_amount" value="0">
-        </div>
-
-        <div class="form-group">
-            <label for="ahp_limit">AHP Limit</label>
-            <input type="number" id="ahp_limit" name="ahp_limit" value="75">
-        </div>
-
-        <div class="form-group">
-            <label for="ahp_decay">AHP Decay</label>
-            <input type="number" step="0.0001" id="ahp_decay" name="ahp_decay" value="1.20000005">
-        </div>
-
-        <div class="form-group">
-            <label for="ahp_efficacy">AHP Efficacy</label>
-            <input type="number" step="0.0001" id="ahp_efficacy" name="ahp_efficacy" value="0.699999988">
-        </div>
-
-        <div class="form-group">
-            <label for="ahp_sustain">AHP Sustain</label>
-            <input type="number" id="ahp_sustain" name="ahp_sustain" value="0">
-        </div>
-
-        <div class="form-group">
-            <label for="ahp_persistant">AHP Persistent</label>
-            <input type="checkbox" id="ahp_persistant" name="ahp_persistant">
-        </div>
-
-        <div class="form-group">
-            <label for="effects">Effects</label>
-            <div id="effects-container">
+        <div id="form1" class="tab-content active">
+            <div class="form-group">
+                <label for="id">ID</label>
+                <input type="number" id="id" name="id" required>
             </div>
-            <button type="button" id="add-effect-btn">Add Effect</button>
-        </div>
-
-
-
-        <div class="form-group">
-            <label for="stamina_regen_multiplier">Stamina Regen Multiplier</label>
-            <input type="number" step="0.1" id="stamina_regen_multiplier" name="stamina_regen_multiplier" value="1">
-        </div>
-
-        <div class="form-group">
-            <label for="stamina_usage_multiplier">Stamina Usage Multiplier</label>
-            <input type="number" step="0.1" id="stamina_usage_multiplier" name="stamina_usage_multiplier" value="1">
-        </div>
-
-        <div class="form-group">
-            <label for="stamina_infinite">Stamina Infinite</label>
-            <input type="checkbox" id="stamina_infinite" name="stamina_infinite">
-        </div>
-
-        <div class="form-group">
-            <label for="max_scp330_candies">Max SCP330 Candies</label>
-            <input type="number" id="max_scp330_candies" name="max_scp330_candies" value="2">
-        </div>
-
-        <div class="form-group">
-            <label for="can_escape">Can Escape</label>
-            <input type="checkbox" id="can_escape" name="can_escape" checked>
-        </div>
-
-        <div class="form-group">
-            <label>Role After Escape</label>
 
             <div class="form-group">
-                <label for="normal_escape">Normal Escape</label>
-                <select id="normal_escape" name="normal_escape">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="override_role_name">Override Role Name?</label>
+                <input type="checkbox" id="override_role_name" name="override_role_name">
+            </div>
+
+            <div class="form-group">
+                <label for="nickname">Nickname</label>
+                <input type="text" id="nickname" name="nickname">
+            </div>
+
+            <div class="form-group">
+                <label for="custom_info">Custom Info</label>
+                <input type="text" id="custom_info" name="custom_info">
+            </div>
+
+            <div class="form-group">
+                <label for="badge_name">Badge Name</label>
+                <input type="text" id="badge_name" name="badge_name">
+            </div>
+            <div class="form-group">
+                <label for="badge_color">Badge Color</label>
+                <select id="badge_color" name="badge_color">
+                    <option value="">None</option>
+                    <option value="pumpkin">Pumpkin</option>
+                    <option value="blue">Blue</option>
+                    <option value="red">Red</option>
+                    <option value="pink">Pink</option>
+                    <option value="brown">Brown</option>
+                    <option value="silver">Silver</option>
+                    <option value="light_green">Light Green</option>
+                    <option value="crimson">Crimson</option>
+                    <option value="cyan">Cyan</option>
+                    <option value="aqua">Aqua</option>
+                    <option value="deep_pink">Deep Pink</option>
+                    <option value="tomato">Tomato</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="magenta">Magenta</option>
+                    <option value="blue_green">Blue Green</option>
+                    <option value="orange">Orange</option>
+                    <option value="lime">Lime</option>
+                    <option value="green">Green</option>
+                    <option value="emerald">Emerald</option>
+                    <option value="carmine">Carmine</option>
+                    <option value="nickel">Nickel</option>
+                    <option value="mint">Mint</option>
+                    <option value="army_green">Army Green</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="form2" class="tab-content">
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select id="role" name="role">
                     <option value="ClassD">ClassD</option>
                     <option value="Scientist">Scientist</option>
                     <option value="Guard">Guard</option>
@@ -297,17 +416,19 @@
                 </select>
             </div>
 
+
             <div class="form-group">
-                <label for="cuffed_escape_team">Cuffed Escape - Team</label>
-                <select id="cuffed_escape_team" name="cuffed_escape_team">
+                <label for="team">Team</label>
+                <select id="team" name="team">
+                    <option value="FoundationForces" selected>MTF</option>
+                    <option value="SCPs">SCP</option>
                     <option value="ChaosInsurgency">Chaos Insurgency</option>
-                    <option value="FoundationForces">Nine-Tailed Fox</option>
                 </select>
             </div>
-
+        
             <div class="form-group">
-                <label for="cuffed_escape_role">Cuffed Escape - New Role</label>
-                <select id="cuffed_escape_role" name="cuffed_escape_role">
+                <label for="role_appearance">Role Appearance</label>
+                <select id="role_appearance" name="role_appearance">
                     <option value="ClassD">ClassD</option>
                     <option value="Scientist">Scientist</option>
                     <option value="Guard">Guard</option>
@@ -337,302 +458,514 @@
                     <option value="ZombieFlamingo">ZombieFlamingo (obsolete)</option>
                 </select>
             </div>
+
+            <div class="form-group">
+                <label for="is_friend_of">Is Friend Of</label>
+                <select id="is_friend_of" name="is_friend_of">
+                    <option value="" selected>None</option>
+                    <option value="FoundationForces">MTF</option>
+                    <option value="SCPs">SCP</option>
+                    <option value="ChaosInsurgency">Chaos Insurgency</option>
+                </select>
+            </div>
+            </div>
+        </div>
+        <div id="form3" class="tab-content">
+            <div class="form-group">
+                <label for="health_amount">Health (Amount)</label>
+                <input type="number" id="health_amount" name="health_amount" value="100">
+            </div>
+
+            <div class="form-group">
+                <label for="health_maximum">Health (Maximum)</label>
+                <input type="number" id="health_maximum" name="health_maximum" value="100">
+            </div>
+
+            <div class="form-group">
+                <label for="hume_shield">Hume Shield</label>
+                <input type="number" id="hume_shield" name="hume_shield" value="0">
+            </div>
+
+            <div class="form-group">
+                <label for="hume_shield_regeneration_amout">Hume Shield Regeneration Amount</label>
+                <input type="number" step="0.1" id="hume_shield_regeneration_amout" name="hume_shield_regeneration_amout" value="2">
+            </div>
+
+            <div class="form-group">
+                <label for="hume_shield_regeneration_delay">Hume Shield Regeneration Delay</label>
+                <input type="number" step="0.1" id="hume_shield_regeneration_delay" name="hume_shield_regeneration_delay" value="7.5">
+            </div>
+
+            <div class="form-group">
+                <label for="ahp_amount">AHP Amount</label>
+                <input type="number" id="ahp_amount" name="ahp_amount" value="0">
+            </div>
+
+            <div class="form-group">
+                <label for="ahp_limit">AHP Limit</label>
+                <input type="number" id="ahp_limit" name="ahp_limit" value="75">
+            </div>
+
+            <div class="form-group">
+                <label for="ahp_decay">AHP Decay</label>
+                <input type="number" step="0.0001" id="ahp_decay" name="ahp_decay" value="1.20000005">
+            </div>
+
+            <div class="form-group">
+                <label for="ahp_efficacy">AHP Efficacy</label>
+                <input type="number" step="0.0001" id="ahp_efficacy" name="ahp_efficacy" value="0.699999988">
+            </div>
+
+            <div class="form-group">
+                <label for="ahp_sustain">AHP Sustain</label>
+                <input type="number" id="ahp_sustain" name="ahp_sustain" value="0">
+            </div>
+
+            <div class="form-group">
+                <label for="ahp_persistant">AHP Persistent</label>
+                <input type="checkbox" id="ahp_persistant" name="ahp_persistant">
+            </div>
+
+            <div class="form-group">
+                <label for="effects">Effects</label>
+                <div id="effects-container">
+                </div>
+                <button type="button" id="add-effect-btn">Add Effect</button>
+            </div>
+
+            <div class="form-group">
+                <label for="stamina_regen_multiplier">Stamina Regen Multiplier</label>
+                <input type="number" step="0.1" id="stamina_regen_multiplier" name="stamina_regen_multiplier" value="1">
+            </div>
+
+            <div class="form-group">
+                <label for="stamina_usage_multiplier">Stamina Usage Multiplier</label>
+                <input type="number" step="0.1" id="stamina_usage_multiplier" name="stamina_usage_multiplier" value="1">
+            </div>
+
+            <div class="form-group">
+                <label for="stamina_infinite">Stamina Infinite</label>
+                <input type="checkbox" id="stamina_infinite" name="stamina_infinite">
+            </div>
+        </div>
+
+        <div id="form4" class="tab-content">
+            <div class="form-group">
+                <label for="can_escape">Can Escape</label>
+                <input type="checkbox" id="can_escape" name="can_escape" checked>
+            </div>
+
+            <div class="form-group">
+                <label>Role After Escape</label>
+
+                <div class="form-group">
+                    <label for="normal_escape">Normal Escape</label>
+                    <select id="normal_escape" name="normal_escape">
+                        <option value="ClassD">ClassD</option>
+                        <option value="Scientist">Scientist</option>
+                        <option value="Guard">Guard</option>
+                        <option value="Scp173">Scp173</option>
+                        <option value="Spectator">Spectator</option>
+                        <option value="Scp106">Scp106</option>
+                        <option value="NtfSpecialist">NtfSpecialist</option>
+                        <option value="Scp049">Scp049</option>
+                        <option value="Scp079">Scp079</option>
+                        <option value="ChaosConscript">ChaosConscript</option>
+                        <option value="Scp096">Scp096</option>
+                        <option value="Scp0492">Scp0492</option>
+                        <option value="NtfSergeant">NtfSergeant</option>
+                        <option value="NtfCaptain">NtfCaptain</option>
+                        <option value="NtfPrivate">NtfPrivate</option>
+                        <option value="Tutorial">Tutorial</option>
+                        <option value="FacilityGuard">FacilityGuard</option>
+                        <option value="Scp939">Scp939</option>
+                        <option value="ChaosRifleman">ChaosRifleman</option>
+                        <option value="ChaosMarauder">ChaosMarauder</option>
+                        <option value="ChaosRepressor">ChaosRepressor</option>
+                        <option value="Overwatch">Overwatch</option>
+                        <option value="Filmmaker">Filmmaker</option>
+                        <option value="Scp3114">Scp3114 (obsolete)</option>
+                        <option value="Flamingo">Flamingo (obsolete)</option>
+                        <option value="AlphaFlamingo">AlphaFlamingo (obsolete)</option>
+                        <option value="ZombieFlamingo">ZombieFlamingo (obsolete)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="cuffed_escape_team">Cuffed Escape - Team</label>
+                    <select id="cuffed_escape_team" name="cuffed_escape_team">
+                        <option value="ChaosInsurgency">Chaos Insurgency</option>
+                        <option value="FoundationForces">Nine-Tailed Fox</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="cuffed_escape_role">Cuffed Escape - New Role</label>
+                    <select id="cuffed_escape_role" name="cuffed_escape_role">
+                        <option value="ClassD">ClassD</option>
+                        <option value="Scientist">Scientist</option>
+                        <option value="Guard">Guard</option>
+                        <option value="Scp173">Scp173</option>
+                        <option value="Spectator">Spectator</option>
+                        <option value="Scp106">Scp106</option>
+                        <option value="NtfSpecialist">NtfSpecialist</option>
+                        <option value="Scp049">Scp049</option>
+                        <option value="Scp079">Scp079</option>
+                        <option value="ChaosConscript">ChaosConscript</option>
+                        <option value="Scp096">Scp096</option>
+                        <option value="Scp0492">Scp0492</option>
+                        <option value="NtfSergeant">NtfSergeant</option>
+                        <option value="NtfCaptain">NtfCaptain</option>
+                        <option value="NtfPrivate">NtfPrivate</option>
+                        <option value="Tutorial">Tutorial</option>
+                        <option value="FacilityGuard">FacilityGuard</option>
+                        <option value="Scp939">Scp939</option>
+                        <option value="ChaosRifleman">ChaosRifleman</option>
+                        <option value="ChaosMarauder">ChaosMarauder</option>
+                        <option value="ChaosRepressor">ChaosRepressor</option>
+                        <option value="Overwatch">Overwatch</option>
+                        <option value="Filmmaker">Filmmaker</option>
+                        <option value="Scp3114">Scp3114 (obsolete)</option>
+                        <option value="Flamingo">Flamingo (obsolete)</option>
+                        <option value="AlphaFlamingo">AlphaFlamingo (obsolete)</option>
+                        <option value="ZombieFlamingo">ZombieFlamingo (obsolete)</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
 
-        <div class="form-group">
-            <label for="scale">Scale (x, y, z)</label>
-            <input type="text" id="scale" name="scale" placeholder="1,1,1" value="1,1,1">
-        </div>
 
-        <div class="form-group">
-            <label for="spawn_broadcast">Spawn Broadcast</label>
-            <textarea id="spawn_broadcast" name="spawn_broadcast">You are a &lt;color=orange&gt;&lt;b&gt;Janitor&lt;/b&gt;&lt;/color&gt;!\nClean the Light Containment Zone!</textarea>
-        </div>
+        <div id="form5" class="tab-content">
+            <div class="form-group">
+                <label for="scale">Scale (x, y, z)</label>
+                <input type="text" id="scale" name="scale" placeholder="1,1,1" value="1,1,1">
+            </div>
 
-        <div class="form-group">
-            <label for="spawn_broadcast_duration">Spawn Broadcast Duration</label>
-            <input type="number" id="spawn_broadcast_duration" name="spawn_broadcast_duration" value="5">
-        </div>
+            <div class="form-group">
+                <label for="spawn_broadcast">Spawn Broadcast</label>
+                <textarea id="spawn_broadcast" name="spawn_broadcast">You are a &lt;color=orange&gt;&lt;b&gt;Janitor&lt;/b&gt;&lt;/color&gt;!\nClean the Light Containment Zone!</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="spawn_broadcast_duration">Spawn Broadcast Duration</label>
+                <input type="number" id="spawn_broadcast_duration" name="spawn_broadcast_duration" value="5">
+            </div>
 
        
-        <div class="form-group">
-            <label for="spawn_hint">Spawn Hint</label>
-            <textarea id="spawn_hint" name="spawn_hint">This hint will be shown when you will spawn as a Janitor!</textarea>
-        </div>
+            <div class="form-group">
+                <label for="spawn_hint">Spawn Hint</label>
+                <textarea id="spawn_hint" name="spawn_hint">This hint will be shown when you will spawn as a Janitor!</textarea>
+            </div>
 
-        <div class="form-group">
-            <label for="spawn_hint_duration">Spawn Hint Duration</label>
-            <input type="number" id="spawn_hint_duration" name="spawn_hint_duration" value="5">
-        </div>
+            <div class="form-group">
+                <label for="spawn_hint_duration">Spawn Hint Duration</label>
+                <input type="number" id="spawn_hint_duration" name="spawn_hint_duration" value="5">
+            </div>
 
-        <div class="form-group">
-            <label for="custom_inventory_limits">Custom Inventory Limits</label>
-            <div id="custom_inventory-limits-container">
-                <div class="custom-inventory-item">
-                    <select class="custom-inventory-item-select">
-                        <option value="Keycard">Keycard</option>
-                        <option value="Medical">Medical</option>
-                        <option value="Radio">Radio</option>
-                        <option value="Firearm">Firearm</option>
-                        <option value="Grenade">Grenade</option>
-                        <option value="SCPItem">SCPItem</option>
-                        <option value="MicroHID">MicroHID</option>
-                        <option value="Ammo">Ammo</option>
-                        <option value="Armor">Armor</option>
+            <div class="form-group">
+            <label>Spawn Settings</label>
+
+                <div class="form-group">
+                    <label for="can_replace_roles">Can Replace Roles</label>
+                    <select id="can_replace_roles" name="can_replace_roles">
+                        <option value="ClassD">ClassD</option>
+                        <option value="Scientist">Scientist</option>
+                        <option value="Guard">Guard</option>
+                        <option value="Scp173">Scp173</option>
+                        <option value="Spectator">Spectator</option>
+                        <option value="Scp106">Scp106</option>
+                        <option value="NtfSpecialist">NtfSpecialist</option>
+                        <option value="Scp049">Scp049</option>
+                        <option value="Scp079">Scp079</option>
+                        <option value="ChaosConscript">ChaosConscript</option>
+                        <option value="Scp096">Scp096</option>
+                        <option value="Scp0492">Scp0492</option>
+                        <option value="NtfSergeant">NtfSergeant</option>
+                        <option value="NtfCaptain">NtfCaptain</option>
+                        <option value="NtfPrivate">NtfPrivate</option>
+                        <option value="Tutorial">Tutorial</option>
+                        <option value="FacilityGuard">FacilityGuard</option>
+                        <option value="Scp939">Scp939</option>
+                        <option value="ChaosRifleman">ChaosRifleman</option>
+                        <option value="ChaosMarauder">ChaosMarauder</option>
+                        <option value="ChaosRepressor">ChaosRepressor</option>
+                        <option value="Overwatch">Overwatch</option>
+                        <option value="Filmmaker">Filmmaker</option>
+                        <option value="Scp3114">Scp3114 (obsolete)</option>
+                        <option value="Flamingo">Flamingo (obsolete)</option>
+                        <option value="AlphaFlamingo">AlphaFlamingo (obsolete)</option>
+                        <option value="ZombieFlamingo">ZombieFlamingo (obsolete)</option>
                     </select>
-                    <input type="number" class="inventory-limit-input" placeholder="Limit" min="0">
-                    <button type="button" class="add-item-btn">+</button>
                 </div>
             </div>
-        </div>
+
+            <div class="form-group">
+                <label for="max_players">Max Players</label>
+                <input type="number" id="max_players" name="max_players" value="10">
+            </div>
+
+            <div class="form-group">
+                <label for="min_players">Min Players</label>
+                <input type="number" id="min_players" name="min_players" value="1">
+            </div>
+
+            <div class="form-group">
+                <label for="spawn_chance">Spawn Chance (%)</label>
+                <input type="number" id="spawn_chance" name="spawn_chance" value="60">
+            </div>
+
+            <div class="form-group">
+                <label for="spawn">Spawn</label>
+                <select id="spawn" name="spawn">
+                    <option value="CompleteRandomSpawn">CompleteRandomSpawn</option>
+                    <option value="ZoneSpawn">ZoneSpawn</option>
+                    <option value="RoomsSpawn" selected>RoomsSpawn</option>
+                    <option value="KeepRoleSpawn">KeepRoleSpawn</option>
+                    <option value="KeepCurrentPositionSpawn">KeepCurrentPositionSpawn</option>
+                    <option value="SpawnPointSpawn">SpawnPointSpawn</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="spawn_zones">Spawn Zones</label>
+                <select id="spawn_zones" name="spawn_zones">
+                    <option value="Unspecified">Unspecified</option>
+                    <option value="LightContainment">LightContainment</option>
+                    <option value="HeavyContainment">HeavyContainment</option>
+                    <option value="Entrance">Entrance</option>
+                    <option value="Surface">Surface</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="spawn-rooms-dropdown">Spawn Rooms</label>
+                <select id="spawn-rooms-dropdown">
+                    <option value="">Select a spawn room</option>
+                    <option value="LczArmory">LczArmory</option>
+                    <option value="LczCurve">LczCurve</option>
+                    <option value="LczStraight">LczStraight</option>
+                    <option value="Lcz330">Lcz330</option>
+                    <option value="Lcz914">Lcz914</option>
+                    <option value="LczCrossing">LczCrossing</option>
+                    <option value="LczTCross">LczTCross</option>
+                    <option value="LczCafe">LczCafe</option>
+                    <option value="LczPlants">LczPlants</option>
+                    <option value="LczToilets">LczToilets</option>
+                    <option value="LczAirlock">LczAirlock</option>
+                    <option value="Lcz173">Lcz173</option>
+                    <option value="LczClassDSpawn">LczClassDSpawn</option>
+                    <option value="LczCheckpointB">LczCheckpointB</option>
+                    <option value="LczGlassBox">LczGlassBox</option>
+                    <option value="LczCheckpointA">LczCheckpointA</option>
+                    <option value="Hcz079">Hcz079</option>
+                    <option value="HczEzCheckpointA">HczEzCheckpointA</option>
+                    <option value="HczEzCheckpointB">HczEzCheckpointB</option>
+                    <option value="HczArmory">HczArmory</option>
+                    <option value="Hcz939">Hcz939</option>
+                    <option value="HczHid">HczHid</option>
+                    <option value="Hcz049">Hcz049</option>
+                    <option value="HczChkpA">HczChkpA</option>
+                    <option value="HczCrossing">HczCrossing</option>
+                    <option value="Hcz106">Hcz106</option>
+                    <option value="HczNuke">HczNuke</option>
+                    <option value="HczTesla">HczTesla</option>
+                    <option value="HczTestRoom">HczTestRoom</option>
+                    <option value="HczElevatorA">HczElevatorA</option>
+                    <option value="HczElevatorB">HczElevatorB</option>
+                    <option value="HczServers">HczServers</option>
+                    <option value="HczChkpB">HczChkpB</option>
+                    <option value="HczTCross">HczTCross</option>
+                    <option value="HczCurve">HczCurve</option>
+                    <option value="Hcz096">Hcz096</option>
+                    <option value="EzVent">EzVent</option>
+                    <option value="EzIntercom">EzIntercom</option>
+                    <option value="EzGateA">EzGateA</option>
+                    <option value="EzDownstairsPcs">EzDownstairsPcs</option>
+                    <option value="EzCurve">EzCurve</option>
+                    <option value="EzPcs">EzPcs</option>
+                    <option value="EzCrossing">EzCrossing</option>
+                    <option value="EzCollapsedTunnel">EzCollapsedTunnel</option>
+                    <option value="EzConference">EzConference</option>
+                    <option value="EzStraight">EzStraight</option>
+                    <option value="EzCafeteria">EzCafeteria</option>
+                    <option value="EzUpstairsPcs">EzUpstairsPcs</option>
+                    <option value="EzGateB">EzGateB</option>
+                    <option value="EzShelter">EzShelter</option>
+                    <option value="Pocket">Pocket</option>
+                    <option value="Surface">Surface</option>
+                    <option value="EzCheckpointHallway">EzCheckpointHallway</option>
+                    <option value="HczTestRoom">HczTestRoom</option>
+                </select>
+                <button type="button" id="add-spawn-room">Add Spawn Room</button>
+                <ul id="spawn-rooms-list"></ul>
+            </div>
 
 
-        <div class="form-group">
-            <label for="inventory">Inventory</label>
-            <div id="inventory-container">
-                <div class="inventory-item">
-                    <p>Click the + button to add a item</p>
-                    <button type="button" class="add-inventory-btn">+</button>
+            <div class="form-group">
+                <label for="spawn_points">Spawn Points (comma-separated)</label>
+                <input type="text" id="spawn_points" name="spawn_points">
+            </div>
+
+            <div class="form-group">
+                <label for="required_permission">Required Permission</label>
+                <input type="text" id="required_permission" name="required_permission" value="">
+            </div>
+            <div class="form-group">
+                <label for="custom_flags">Custom Flags</label>
+                <div id="custom-flags-container">
+                    <select id="custom-flags-dropdown" name="custom_flags" class="custom-flags-dropdown">
+                        <option value="">Select a flag</option>
+                        <option value="DoNotTriggerTeslaGates">DoNotTriggerTeslaGates</option>
+                        <option value="LifeStealer">LifeStealer</option>
+                        <option value="HalfLifeStealer">HalfLifeStealer</option>
+                        <option value="NotAffectedByAppearance">NotAffectedByAppearance</option>
+                        <option value="PacifismUntilDamage">PacifismUntilDamage</option>
+                        <option value="CustomScpAnnouncer">CustomScpAnnouncer</option>
+                        <option value="ShowOnlyCustomInfo">ShowOnlyCustomInfo</option>
+                        <option value="SilentWalker">SilentWalker</option>
+                        <option value="SilentAnnouncer">SilentAnnouncer</option>
+                        <option value="TutorialRagdoll">TutorialRagdoll</option>
+                        <option value="DoNotTrigger096">DoNotTrigger096</option>
+                        <option value="BanKeycards">BanKeycards</option>
+                        <option value="BanMedicals">BanMedicals</option>
+                        <option value="BanRadios">BanRadios</option>
+                        <option value="BanFirearms">BanFirearms</option>
+                        <option value="BanGrenades">BanGrenades</option>
+                        <option value="BanSCPItems">BanSCPItems</option>
+                        <option value="BanMicroHID">BanMicroHID</option>
+                        <option value="BanArmors">BanArmors</option>
+                    </select>
                 </div>
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <label for="custom_items_inventory">Custom Items Inventory (comma-separated)</label>
-            <input type="text" id="custom_items_inventory" name="custom_items_inventory">
-        </div>
-
-        <div class="form-group">
-            <label>Ammo</label>
-
-            <div class="form-group">
-                <label for="ammo_nato9">Nato9</label>
-                <input type="number" id="ammo_nato9" name="ammo_nato9" value="10">
-            </div>
-
-            <div class="form-group">
-                <label for="ammo_nato556">Nato556</label>
-                <input type="number" id="ammo_nato556" name="ammo_nato556" value="10">
-            </div>
-
-            <div class="form-group">
-                <label for="ammo_nato762">Nato762</label>
-                <input type="number" id="ammo_nato762" name="ammo_nato762" value="10">
-            </div>
-
-            <div class="form-group">
-                <label for="ammo_12gauge">12 Gauge</label>
-                <input type="number" id="ammo_12gauge" name="ammo_12gauge" value="10">
-            </div>
-
-            <div class="form-group">
-                <label for="ammo_44cal">.44 Caliber</label>
-                <input type="number" id="ammo_44cal" name="ammo_44cal" value="10">
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <label for="damage_multiplier">Damage Multiplier</label>
-            <input type="number" step="0.1" id="damage_multiplier" name="damage_multiplier" value="1">
-        </div>
-
-    <div class="form-group">
-        <label>Spawn Settings</label>
-
-            <div class="form-group">
-                <label for="can_replace_roles">Can Replace Roles</label>
-                <select id="can_replace_roles" name="can_replace_roles">
-                    <option value="ClassD">ClassD</option>
-                    <option value="Scientist">Scientist</option>
-                    <option value="Guard">Guard</option>
-                    <option value="Scp173">Scp173</option>
-                    <option value="Spectator">Spectator</option>
-                    <option value="Scp106">Scp106</option>
-                    <option value="NtfSpecialist">NtfSpecialist</option>
-                    <option value="Scp049">Scp049</option>
-                    <option value="Scp079">Scp079</option>
-                    <option value="ChaosConscript">ChaosConscript</option>
-                    <option value="Scp096">Scp096</option>
-                    <option value="Scp0492">Scp0492</option>
-                    <option value="NtfSergeant">NtfSergeant</option>
-                    <option value="NtfCaptain">NtfCaptain</option>
-                    <option value="NtfPrivate">NtfPrivate</option>
-                    <option value="Tutorial">Tutorial</option>
-                    <option value="FacilityGuard">FacilityGuard</option>
-                    <option value="Scp939">Scp939</option>
-                    <option value="ChaosRifleman">ChaosRifleman</option>
-                    <option value="ChaosMarauder">ChaosMarauder</option>
-                    <option value="ChaosRepressor">ChaosRepressor</option>
-                    <option value="Overwatch">Overwatch</option>
-                    <option value="Filmmaker">Filmmaker</option>
-                    <option value="Scp3114">Scp3114 (obsolete)</option>
-                    <option value="Flamingo">Flamingo (obsolete)</option>
-                    <option value="AlphaFlamingo">AlphaFlamingo (obsolete)</option>
-                    <option value="ZombieFlamingo">ZombieFlamingo (obsolete)</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="max_players">Max Players</label>
-            <input type="number" id="max_players" name="max_players" value="10">
-        </div>
-
-        <div class="form-group">
-            <label for="min_players">Min Players</label>
-            <input type="number" id="min_players" name="min_players" value="1">
-        </div>
-
-        <div class="form-group">
-            <label for="spawn_chance">Spawn Chance (%)</label>
-            <input type="number" id="spawn_chance" name="spawn_chance" value="60">
-        </div>
-
-        <div class="form-group">
-            <label for="spawn">Spawn</label>
-            <select id="spawn" name="spawn">
-                <option value="CompleteRandomSpawn">CompleteRandomSpawn</option>
-                <option value="ZoneSpawn">ZoneSpawn</option>
-                <option value="RoomsSpawn" selected>RoomsSpawn</option>
-                <option value="KeepRoleSpawn">KeepRoleSpawn</option>
-                <option value="KeepCurrentPositionSpawn">KeepCurrentPositionSpawn</option>
-                <option value="SpawnPointSpawn">SpawnPointSpawn</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="spawn_zones">Spawn Zones</label>
-            <select id="spawn_zones" name="spawn_zones">
-                <option value="Unspecified">Unspecified</option>
-                <option value="LightContainment">LightContainment</option>
-                <option value="HeavyContainment">HeavyContainment</option>
-                <option value="Entrance">Entrance</option>
-                <option value="Surface">Surface</option>
-                <option value="Other">Other</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="spawn-rooms-dropdown">Spawn Rooms</label>
-            <select id="spawn-rooms-dropdown">
-                <option value="">Select a spawn room</option>
-                <option value="LczArmory">LczArmory</option>
-                <option value="LczCurve">LczCurve</option>
-                <option value="LczStraight">LczStraight</option>
-                <option value="Lcz330">Lcz330</option>
-                <option value="Lcz914">Lcz914</option>
-                <option value="LczCrossing">LczCrossing</option>
-                <option value="LczTCross">LczTCross</option>
-                <option value="LczCafe">LczCafe</option>
-                <option value="LczPlants">LczPlants</option>
-                <option value="LczToilets">LczToilets</option>
-                <option value="LczAirlock">LczAirlock</option>
-                <option value="Lcz173">Lcz173</option>
-                <option value="LczClassDSpawn">LczClassDSpawn</option>
-                <option value="LczCheckpointB">LczCheckpointB</option>
-                <option value="LczGlassBox">LczGlassBox</option>
-                <option value="LczCheckpointA">LczCheckpointA</option>
-                <option value="Hcz079">Hcz079</option>
-                <option value="HczEzCheckpointA">HczEzCheckpointA</option>
-                <option value="HczEzCheckpointB">HczEzCheckpointB</option>
-                <option value="HczArmory">HczArmory</option>
-                <option value="Hcz939">Hcz939</option>
-                <option value="HczHid">HczHid</option>
-                <option value="Hcz049">Hcz049</option>
-                <option value="HczChkpA">HczChkpA</option>
-                <option value="HczCrossing">HczCrossing</option>
-                <option value="Hcz106">Hcz106</option>
-                <option value="HczNuke">HczNuke</option>
-                <option value="HczTesla">HczTesla</option>
-                <option value="HczTestRoom">HczTestRoom</option>
-                <option value="HczElevatorA">HczElevatorA</option>
-                <option value="HczElevatorB">HczElevatorB</option>
-                <option value="HczServers">HczServers</option>
-                <option value="HczChkpB">HczChkpB</option>
-                <option value="HczTCross">HczTCross</option>
-                <option value="HczCurve">HczCurve</option>
-                <option value="Hcz096">Hcz096</option>
-                <option value="EzVent">EzVent</option>
-                <option value="EzIntercom">EzIntercom</option>
-                <option value="EzGateA">EzGateA</option>
-                <option value="EzDownstairsPcs">EzDownstairsPcs</option>
-                <option value="EzCurve">EzCurve</option>
-                <option value="EzPcs">EzPcs</option>
-                <option value="EzCrossing">EzCrossing</option>
-                <option value="EzCollapsedTunnel">EzCollapsedTunnel</option>
-                <option value="EzConference">EzConference</option>
-                <option value="EzStraight">EzStraight</option>
-                <option value="EzCafeteria">EzCafeteria</option>
-                <option value="EzUpstairsPcs">EzUpstairsPcs</option>
-                <option value="EzGateB">EzGateB</option>
-                <option value="EzShelter">EzShelter</option>
-                <option value="Pocket">Pocket</option>
-                <option value="Surface">Surface</option>
-                <option value="EzCheckpointHallway">EzCheckpointHallway</option>
-                <option value="HczTestRoom">HczTestRoom</option>
-            </select>
-            <button type="button" id="add-spawn-room">Add Spawn Room</button>
-            <ul id="spawn-rooms-list"></ul>
-        </div>
-
-
-        <div class="form-group">
-            <label for="spawn_points">Spawn Points (comma-separated)</label>
-            <input type="text" id="spawn_points" name="spawn_points">
-        </div>
-
-        <div class="form-group">
-            <label for="required_permission">Required Permission</label>
-            <input type="text" id="required_permission" name="required_permission" value="">
-        </div>
-    </div>
-
-        <div class="form-group">
-            <label for="custom_flags">Custom Flags</label>
-            <div id="custom-flags-container">
-                <select id="custom-flags-dropdown" name="custom_flags" class="custom-flags-dropdown">
-                    <option value="">Select a flag</option>
-                    <option value="DoNotTriggerTeslaGates">DoNotTriggerTeslaGates</option>
-                    <option value="LifeStealer">LifeStealer</option>
-                    <option value="HalfLifeStealer">HalfLifeStealer</option>
-                    <option value="NotAffectedByAppearance">NotAffectedByAppearance</option>
-                    <option value="PacifismUntilDamage">PacifismUntilDamage</option>
-                    <option value="CustomScpAnnouncer">CustomScpAnnouncer</option>
-                    <option value="ShowOnlyCustomInfo">ShowOnlyCustomInfo</option>
-                    <option value="SilentWalker">SilentWalker</option>
-                    <option value="SilentAnnouncer">SilentAnnouncer</option>
-                    <option value="TutorialRagdoll">TutorialRagdoll</option>
-                    <option value="DoNotTrigger096">DoNotTrigger096</option>
-                    <option value="BanKeycards">BanKeycards</option>
-                    <option value="BanMedicals">BanMedicals</option>
-                    <option value="BanRadios">BanRadios</option>
-                    <option value="BanFirearms">BanFirearms</option>
-                    <option value="BanGrenades">BanGrenades</option>
-                    <option value="BanSCPItems">BanSCPItems</option>
-                    <option value="BanMicroHID">BanMicroHID</option>
-                    <option value="BanArmors">BanArmors</option>
-                </select>
                 <button type="button" id="add-custom-flag">Add Flag</button>
+                <ul id="custom-flags-list"></ul>
             </div>
-            <ul id="custom-flags-list"></ul>
+        </div>
+        <div id="form6" class="tab-content">
+            <div class="form-group">
+                <label>Ammo</label>
+
+                <div class="form-group">
+                    <label for="ammo_nato9">Nato9</label>
+                    <input type="number" id="ammo_nato9" name="ammo_nato9" value="10">
+                </div>
+
+                <div class="form-group">
+                    <label for="ammo_nato556">Nato556</label>
+                    <input type="number" id="ammo_nato556" name="ammo_nato556" value="10">
+                </div>
+
+                <div class="form-group">
+                    <label for="ammo_nato762">Nato762</label>
+                    <input type="number" id="ammo_nato762" name="ammo_nato762" value="10">
+                </div>
+
+                <div class="form-group">
+                    <label for="ammo_12gauge">12 Gauge</label>
+                    <input type="number" id="ammo_12gauge" name="ammo_12gauge" value="10">
+                </div>
+
+                <div class="form-group">
+                    <label for="ammo_44cal">.44 Caliber</label>
+                    <input type="number" id="ammo_44cal" name="ammo_44cal" value="10">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="custom_inventory_limits">Custom Inventory Limits</label>
+                <div id="custom_inventory-limits-container">
+                    <div class="custom-inventory-item">
+                        <select class="custom-inventory-item-select">
+                            <option value="Keycard">Keycard</option>
+                            <option value="Medical">Medical</option>
+                            <option value="Radio">Radio</option>
+                            <option value="Firearm">Firearm</option>
+                            <option value="Grenade">Grenade</option>
+                            <option value="SCPItem">SCPItem</option>
+                            <option value="MicroHID">MicroHID</option>
+                            <option value="Ammo">Ammo</option>
+                            <option value="Armor">Armor</option>
+                        </select>
+                        <input type="number" class="inventory-limit-input" placeholder="Limit" min="0">
+                        <button type="button" class="add-item-btn">+</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="inventory">Inventory</label>
+                <div id="inventory-container">
+                    <div class="inventory-item">
+                        <p>Click the + button to add a item</p>
+                        <button type="button" class="add-inventory-btn">+</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="custom_items_inventory">Custom Items Inventory (comma-separated)</label>
+                <input type="text" id="custom_items_inventory" name="custom_items_inventory">
+            </div>
         </div>
 
+        <div id="form7" class="tab-content">
+            <div class="form-group">
+                <label for="max_scp330_candies">Max SCP330 Candies</label>
+                <input type="number" id="max_scp330_candies" name="max_scp330_candies" value="2">
+            </div>
 
-        <div class="form-group">
-            <label for="ignore_spawn_system">Ignore Spawn System</label>
-            <input type="checkbox" id="ignore_spawn_system" name="ignore_spawn_system">
+            <div class="form-group">
+                <label for="damage_multiplier">Damage Multiplier</label>
+                <input type="number" step="0.1" id="damage_multiplier" name="damage_multiplier" value="1">
+           </div>
+
+            <div class="form-group">
+                <label for="ignore_spawn_system">Ignore Spawn System</label>
+                <input type="checkbox" id="ignore_spawn_system" name="ignore_spawn_system">
+            </div>
         </div>
 
         <button type="button" onclick="generateRole()">Generate Role</button>
     </form>
 </div>
 <script>
+const contactLink = document.getElementById('contactLink');
+const contactPopup = document.getElementById('contactPopup');
+const closePopup = document.getElementById('closePopup');
+
+contactLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    contactPopup.style.display = 'block';
+});
+
+closePopup.addEventListener('click', (event) => {
+    event.preventDefault();
+    contactPopup.style.display = 'none';
+});
+
+window.addEventListener('click', (event) => {
+    if (event.target === contactPopup) {
+        contactPopup.style.display = 'none';
+    }
+});
+function showTab(tabId) {
+    const tabs = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => tab.classList.remove('active'));
+
+    const buttons = document.querySelectorAll('.tab-button');
+    buttons.forEach(button => button.classList.remove('active'));
+
+    const selectedTab = document.getElementById(tabId);
+    selectedTab.classList.add('active');
+
+    const selectedButton = Array.from(buttons).find(button => button.textContent.toLowerCase().replace(' ', '') === tabId);
+    selectedButton.classList.add('active');
+}
 document.addEventListener("DOMContentLoaded", () => {
     const inventoryContainer = document.getElementById("inventory-container");
-    const maxDropdowns = 8;
+    const maxDropdowns = 9;
 
     function addInventoryDropdown() {
         const currentDropdowns = inventoryContainer.getElementsByClassName("inventory-item").length;
@@ -706,7 +1039,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <option value="Coal">Coal</option>
                 <option value="SpecialCoal">SpecialCoal</option>
                 <option value="Tape">Tape</option>
-            </select>
+            </select> 
             <button type="button" class="remove-inventory-btn">Remove</button>
         `;
 
@@ -734,6 +1067,7 @@ document.getElementById("add-spawn-room").addEventListener("click", () => {
         const removeButton = document.createElement("button");
         removeButton.textContent = "Remove";
         removeButton.style.marginLeft = "10px";
+        removeButton.style.width = "10%";
         removeButton.addEventListener("click", () => {
             listItem.remove();
         });
@@ -773,6 +1107,7 @@ document.getElementById("add-custom-flag").addEventListener("click", () => {
         const removeButton = document.createElement("button");
         removeButton.textContent = "Remove";
         removeButton.style.marginLeft = "10px";
+        removeButton.style.width = "10%";
         removeButton.addEventListener("click", () => {
             listItem.remove();
         });
@@ -820,6 +1155,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const effectDropdown = document.createElement("select");
         effectDropdown.classList.add("effect-dropdown");
+        effectDropdown.style.width = "10%";
         effectDropdown.name = "effect";
 
         effectsList.forEach(effect => {
@@ -925,12 +1261,13 @@ function generateRole() {
     const yamlData = {
         id: parseInt(formData.get("id")),
         name: formData.get("name"),
+        override_role_name: formData.get("override_role_name") === "off",
         nickname: formData.get("nickname"),
         custom_info: formData.get("custom_info"),
         badge_name: formData.get("badge_name"),
         badge_color: formData.get("badge_color"),
         role: formData.get("role"),
-        team: formData.get("team"),
+        team: formData.get("team") || FoundationForces,
         role_appearance: formData.get("role_appearance"),
         is_friend_of: parseCommaSeparated(formData.get("is_friend_of")) || [],
         health: {
@@ -998,9 +1335,9 @@ function generateRole() {
             spawn_zones: parseCommaSeparated(formData.get("spawn_zones")) || [],
             spawn_rooms: gatherSpawnRooms() || [],
             spawn_points: parseCommaSeparated(formData.get("spawn_points")) || [],
-            required_permission: formData.get("required_permission") || [],
+            required_permission: formData.get("required_permission"),
         },
-        custom_flags: gatherCustomFlags() || [],
+        custom_flags: gatherCustomFlags(),
         ignore_spawn_system: formData.get("ignore_spawn_system") === "on",
     };
 
