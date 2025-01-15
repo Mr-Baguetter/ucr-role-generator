@@ -21,6 +21,7 @@
     <meta name="twitter:image" content="https://cdn.thaumielscpsl.site/thaumielsecurity.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
     <style>
@@ -173,10 +174,6 @@ textarea {
     outline: none;
 }
 
-input[type="checkbox"] {
-    margin-top: 8px;
-}
-
 form {
     overflow-y: auto;
     max-height: 80vh;
@@ -302,6 +299,40 @@ form .form-group input[type="number"] {
     border-radius: 5px;
     cursor: pointer;
 }
+.info-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    align-items: center;
+}
+
+.info-icon:hover::after {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+.Ammo-Label {
+    font-size: 2em;
+    font-weight: bold;
+}
     </style>
 </head>
 <body>
@@ -365,29 +396,29 @@ form .form-group input[type="number"] {
                 <label for="badge_color">Badge Color</label>
                 <select id="badge_color" name="badge_color">
                     <option value="">None</option>
-                    <option value="pumpkin">Pumpkin</option>
-                    <option value="blue">Blue</option>
-                    <option value="red">Red</option>
-                    <option value="pink">Pink</option>
-                    <option value="brown">Brown</option>
-                    <option value="silver">Silver</option>
-                    <option value="light_green">Light Green</option>
-                    <option value="crimson">Crimson</option>
-                    <option value="cyan">Cyan</option>
-                    <option value="aqua">Aqua</option>
-                    <option value="deep_pink">Deep Pink</option>
-                    <option value="tomato">Tomato</option>
-                    <option value="yellow">Yellow</option>
-                    <option value="magenta">Magenta</option>
-                    <option value="blue_green">Blue Green</option>
-                    <option value="orange">Orange</option>
-                    <option value="lime">Lime</option>
-                    <option value="green">Green</option>
-                    <option value="emerald">Emerald</option>
-                    <option value="carmine">Carmine</option>
-                    <option value="nickel">Nickel</option>
-                    <option value="mint">Mint</option>
-                    <option value="army_green">Army Green</option>
+                    <option value="pumpkin" style="background-color: #EE7600;">Pumpkin</option>
+                    <option value="blue" style="background-color: #0000FF;">Blue</option>
+                    <option value="red" style="background-color: #C50000;">Red</option>
+                    <option value="pink" style="background-color: #FF96DE;">Pink</option>
+                    <option value="brown" style="background-color: #944710;">Brown</option>
+                    <option value="silver" style="background-color: #A0A0A0;">Silver</option>
+                    <option value="light_green" style="background-color: #32CD32;">Light Green</option>
+                    <option value="crimson" style="background-color: #DC143C;">Crimson</option>
+                    <option value="cyan" style="background-color: #00B7EB;">Cyan</option>
+                    <option value="aqua" style="background-color: #00FFFF;">Aqua</option>
+                    <option value="deep_pink" style="background-color: #FF1493;">Deep Pink</option>
+                    <option value="tomato" style="background-color: #FF6448;">Tomato</option>
+                    <option value="yellow" style="background-color: #FAFF86;">Yellow</option>
+                    <option value="magenta" style="background-color: #FF0090;">Magenta</option>
+                    <option value="blue_green" style="background-color: #4DFFB8;">Blue Green</option>
+                    <option value="orange" style="background-color: #FF9966;">Orange</option>
+                    <option value="lime" style="background-color: #BFFF00;">Lime</option>
+                    <option value="green" style="background-color: #228B22;">Green</option>
+                    <option value="emerald" style="background-color: #50C878;">Emerald</option>
+                    <option value="carmine" style="background-color: #960018;">Carmine</option>
+                    <option value="nickel" style="background-color: #727472;">Nickel</option>
+                    <option value="mint" style="background-color: #98FB98;">Mint</option>
+                    <option value="army_green" style="background-color: #4B5320;">Army Green</option>
                 </select>
             </div>
         </div>
@@ -472,7 +503,7 @@ form .form-group input[type="number"] {
             <div class="form-group">
                 <label for="is_friend_of">Is Friend Of</label>
                 <select id="is_friend_of" name="is_friend_of">
-                    <option value="" selected>None</option>
+                    <option value="" selected>Class Team</option>
                     <option value="FoundationForces">MTF</option>
                     <option value="SCPs">SCP</option>
                     <option value="ChaosInsurgency">Chaos Insurgency</option>
@@ -854,31 +885,31 @@ form .form-group input[type="number"] {
         </div>
         <div id="form6" class="tab-content">
             <div class="form-group">
-                <label>Ammo</label>
+                <label class="Ammo-Label">Ammo</label>
 
                 <div class="form-group">
                     <label for="ammo_nato9">Nato9</label>
-                    <input type="number" id="ammo_nato9" name="ammo_nato9" value="10">
+                    <input type="number" id="ammo_nato9" name="ammo_nato9" value="0"> <span class="info-icon" title="Ammo for the Com-15, Com-18, Crossvec, FSP-9, and the Com-45.">?</span>
                 </div>
 
                 <div class="form-group">
                     <label for="ammo_nato556">Nato556</label>
-                    <input type="number" id="ammo_nato556" name="ammo_nato556" value="10">
+                    <input type="number" id="ammo_nato556" name="ammo_nato556" value="0"> <span class="info-icon" title="Ammo for the Epsilon-11, and the FR-MG-0.">?</span>
                 </div>
 
                 <div class="form-group">
                     <label for="ammo_nato762">Nato762</label>
-                    <input type="number" id="ammo_nato762" name="ammo_nato762" value="10">
+                    <input type="number" id="ammo_nato762" name="ammo_nato762" value="0"> <span class="info-icon" title="Ammo for the AK, A7, and the Logicer.">?</span>
                 </div>
 
                 <div class="form-group">
                     <label for="ammo_12gauge">12 Gauge</label>
-                    <input type="number" id="ammo_12gauge" name="ammo_12gauge" value="10">
+                    <input type="number" id="ammo_12gauge" name="ammo_12gauge" value="0"> <span class="info-icon" title="Ammo for the Shotgun.">?</span>
                 </div>
 
                 <div class="form-group">
                     <label for="ammo_44cal">.44 Caliber</label>
-                    <input type="number" id="ammo_44cal" name="ammo_44cal" value="10">
+                    <input type="number" id="ammo_44cal" name="ammo_44cal" value="0"> <span class="info-icon" title="Ammo for the Revolver.">?</span>
                 </div>
             </div>
             <div class="form-group">
@@ -1045,10 +1076,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 <option value="GunFRMG0">GunFRMG0</option>
                 <option value="GunA7">GunA7</option>
                 <option value="Lantern">Lantern</option>
-                <option value="Snowball">Snowball</option>
-                <option value="Coal">Coal</option>
-                <option value="SpecialCoal">SpecialCoal</option>
-                <option value="Tape">Tape</option>
+                <option value="Snowball">Snowball (Obsolete)</option>
+                <option value="Coal">Coal (Obsolete)</option>
+                <option value="SpecialCoal">SpecialCoal (Obsolete)</option>
+                <option value="Tape">Tape (Obsolete)</option>
             </select> 
             <button type="button" class="remove-inventory-btn">Remove</button>
         `;
@@ -1143,6 +1174,8 @@ const gatherCustomFlags = () => {
 
     return customFlags.join(", ");
 };
+
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
